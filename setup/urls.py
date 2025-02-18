@@ -17,12 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from apps.jornadaMilhas.views import DepoimentoViewSet
+from apps.jornadaMilhas.views import DepoimentoViewSet,DepoimentoHomeViewSet
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter() #Criação de um router para melhorar a visibilidade do código
+
+#Registrando rotas no router
 router.register('depoimentos',DepoimentoViewSet, basename='Depoimentos')
+router.register('depoimentos-home',DepoimentoHomeViewSet,basename='Depoimentos Home')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('', include(router.urls)), #Inclui as rotas do router
 ]
