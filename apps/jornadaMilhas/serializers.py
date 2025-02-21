@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.jornadaMilhas.models import Depoimento, Destino
+from apps.jornadaMilhas.validators import *
 
 
 class DepoimentoSerializer(serializers.ModelSerializer):
@@ -18,3 +19,10 @@ class DestinoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Destino
         fields = '__all__'
+
+    #Verifica se o 'nome' é nulo, caso seja, completar com o texto do ChatGPT
+    def validate(self, data):
+        if not data['texto_descritivo']:
+           data['texto_descritivo'] = get_texto_descritivo_chatGPT(data['nome'])
+        print(data)
+        return data

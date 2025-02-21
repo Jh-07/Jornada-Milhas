@@ -26,9 +26,16 @@ class DestinosTestCase(APITestCase):
             self.Destino_1 = Destino.objects.create(
                 nome = 'Teste um',
                 preco = 1500.00,
+                meta = 'Meta texto da imagem 1',
+                texto_descritivo = 'Descrição da viagem destino 1',
 
-                 foto = SimpleUploadedFile( #Como as fotos são ImageFields, é necessário usar essa classe para criar uma imagem de teste
-                    name='foto_de_teste_destino_1.jpg',
+                foto_1 = SimpleUploadedFile( #Como as fotos são ImageFields, é necessário usar essa classe para criar uma imagem de teste
+                    name='foto_de_teste_destino_1_1.jpg',
+                    content=open('Foto depoimento/paris.jpg','rb').read(),
+                    content_type = 'image/jpg'
+                ),
+                foto_2 = SimpleUploadedFile( #Como as fotos são ImageFields, é necessário usar essa classe para criar uma imagem de teste
+                    name='foto_de_teste_destino_1_2.jpg',
                     content=open('Foto depoimento/paris.jpg','rb').read(),
                     content_type = 'image/jpg'
                 )
@@ -39,11 +46,19 @@ class DestinosTestCase(APITestCase):
             self.Destino_2 = Destino.objects.create(
                 nome ='Teste dois',
                 preco= 2500.00,
+                meta='Meta texto da imagem 2',
+                texto_descritivo='Descrição da viagem destino 2', #substituir por api chatgpt
 
-                 foto = SimpleUploadedFile(
-                    name='foto_de_teste_destino_2.jpg',
+                 foto_1 = SimpleUploadedFile(
+                    name='foto_de_teste_destino_2_1.jpg',
                     content=open('Foto depoimento/download.jpg','rb').read(),
                     content_type = 'image/jpg'
+                ),
+                foto_2 = SimpleUploadedFile(
+                    # Como as fotos são ImageFields, é necessário usar essa classe para criar uma imagem de teste
+                    name='foto_de_teste_destino_2_2.jpg',
+                    content=open('Foto depoimento/paris.jpg', 'rb').read(),
+                    content_type='image/jpg'
                 )
 
 
@@ -60,7 +75,8 @@ class DestinosTestCase(APITestCase):
 
         dados = Destino.objects.get(pk = 1) #ao usar 'objects.get()'se usa o argumento pk (primary key) e não Id
         dados_serializados = DestinoSerializer(instance=dados).data
-        dados_serializados['foto'] = 'http://testserver' + dados_serializados['foto'] #A serialização retorna no campo 'foto' a url de hospedagem(absoluta) enquanto 'objects.get' retorna apenas o caminho relativo
+        dados_serializados['foto_1'] = 'http://testserver' + dados_serializados['foto_1'] #A serialização retorna no campo 'foto' a url de hospedagem(absoluta) enquanto 'objects.get' retorna apenas o caminho relativo
+        dados_serializados['foto_2'] = 'http://testserver' + dados_serializados['foto_2'] #A serialização retorna no campo 'foto' a url de hospedagem(absoluta) enquanto 'objects.get' retorna apenas o caminho relativo
         self.assertEqual(response.data,dados_serializados)
 
 
@@ -72,8 +88,15 @@ class DestinosTestCase(APITestCase):
         dados = {
             'nome': 'Testando denovo',
             'preco': '1500.00',
-             'foto': SimpleUploadedFile(
-                name='foto_de_teste_destino_3.jpg',
+            'meta' : 'Meta texto da imagem de teste',
+            'texto_descritivo' : 'Descrição da viagem destino teste',
+            'foto_1': SimpleUploadedFile(
+                name='foto_de_teste_destino_3_1.jpg',
+                content=open('Foto depoimento/paris.jpg','rb').read(),
+                content_type = 'image/jpg'
+            ),
+            'foto_2': SimpleUploadedFile(
+                name='foto_de_teste_destino_3_2.jpg',
                 content=open('Foto depoimento/paris.jpg','rb').read(),
                 content_type = 'image/jpg'
             )
@@ -85,8 +108,15 @@ class DestinosTestCase(APITestCase):
         dados = {
             'nome': 'Testando',
             'preco': '2500.00',
-             'foto' : SimpleUploadedFile(
-                name='foto_de_teste_destino_4.jpg',
+            'meta': 'Meta texto da imagem de teste',
+            'texto_descritivo': 'Descrição da viagem destino teste',
+            'foto_1' : SimpleUploadedFile(
+                name='foto_de_teste_destino_4_1.jpg',
+                content=open('Foto depoimento/paris.jpg','rb').read(),
+                content_type = 'image/jpg'
+            ),
+            'foto_2' : SimpleUploadedFile(
+                name='foto_de_teste_destino_4_2.jpg',
                 content=open('Foto depoimento/paris.jpg','rb').read(),
                 content_type = 'image/jpg'
             )
